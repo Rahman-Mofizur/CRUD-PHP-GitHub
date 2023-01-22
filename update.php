@@ -2,8 +2,40 @@
 
 include 'connect.php';
 
+// 1 Starts here
+// Get updateid in $id variable
 
-// For writing in multiple lines at same time: Alt+L and by pressing Alt select the lines 
+// Method-1: If id is set then work next!
+// if (isset($_GET['updateid'])) {
+//     $id = $_GET['updateid'];
+// }
+
+// Method-2: Bellow code Works Just like isset() Function!
+$id = $_GET['updateid'] ?? "";
+
+
+
+
+// 4 Display on Update Screen
+// For displaying the information in the update template! So that only the field that is required to change!
+$sql = "SELECT * from crud_db WHERE id = $id";
+$result = mysqli_query($con, $sql);
+
+// Diplaying only one Row by fetching from Database, So NO NEED of while loop
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $name_1 = $row['name'];   // This variables are used in HTML Form below as value= "php echo $name_1" 
+    $email_1 = $row['email'];
+    $mobile_1 = $row['mobile'];
+    $password_1 = $row['password'];
+}
+
+
+
+
+
+// 2 Update Logics
+// For writing in multiple lines at same time: (Alt + L) and by pressing Alt select the lines 
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -11,17 +43,18 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
 
     // Insert Query
-    $sql = "INSERT into crud_db(name, email, mobile, password) VALUES('$name', '$email', '$mobile','$password')";
-
+    // $sql = "update crud_db set name = '$name' where id = '$id'";
+    $sql = "UPDATE crud_db SET name='$name', email='$email', mobile='$mobile', password='$password' WHERE id=$id";
     //  To execute this query, a variable is created named $result for passing the Connection and Query variables.
     $result = mysqli_query($con, $sql);
 
     // Checking the Result query has executed susseccfully or not!
     if ($result) {
-        // echo "Data Inserted Successfully";  (For checking whether the data is inserted or not)
+        // echo "Data Updated Successfully";  (For checking whether the data is inserted or not)
 
         // Redirect to the CRUD Table (Display Table)
         header('location: display.php');
+        echo "Data Updated Successfully";
     } else {
         die(mysqli_error($con));
     }
@@ -30,11 +63,7 @@ if (isset($_POST['submit'])) {
 ?>
 
 
-
-
-
-
-
+<!-- 3 Display Screen -->
 <!doctype html>
 <html lang="en">
 
@@ -46,7 +75,7 @@ if (isset($_POST['submit'])) {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 
-    <title>CRUD Operqation</title>
+    <title>CRUD Operation</title>
 </head>
 
 <body>
@@ -57,14 +86,14 @@ if (isset($_POST['submit'])) {
             <!-- Name -->
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" placeholder="Enter your name" name="name" autocomplete="off">
+                <input type="text" class="form-control" placeholder="Enter your name" name="name" value="<?php echo $name_1 ?>" autocomplete="off">
                 <!-- name="name"  is used within if(isset($_POST['submit'])) Function to check whether the field is gaining the perfect criteria or not! -->
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" placeholder="Enter your email" name="email" autocomplete="off">
+                <input type="email" class="form-control" placeholder="Enter your email" name="email" value="<?php echo $email_1 ?>" autocomplete="off">
                 <!-- class= text-danger means red Text -->
                 <small class="text-danger">We'll never share your email with anyone else.</small>
             </div>
@@ -72,20 +101,20 @@ if (isset($_POST['submit'])) {
             <!-- Mobile -->
             <div class="form-group">
                 <label>Mobile</label>
-                <input type="text" class="form-control" placeholder="Enter your mobile number" name="mobile" autocomplete="off">
+                <input type="text" class="form-control" placeholder="Enter your mobile number" name="mobile" value="<?php echo $mobile_1 ?>" autocomplete="off">
             </div>
 
             <!-- Password -->
             <div class="form-group">
                 <label>Password</label>
-                <input type="text" class="form-control" placeholder="Enter your password" name="password" autocomplete="off">
+                <input type="text" class="form-control" placeholder="Enter your password" name="password" value="<?php echo $password_1 ?>" autocomplete="off">
                 <!-- class= text-danger means red Text -->
                 <small class="text-danger">Provide at least 1 numeric, 1 special character (@,!,$) and a capital latter! </small>
             </div>
 
 
             <!-- If you click this Submit button that uses name="submit" will go to the database by POST method and this name="submit" is used in if(isset($_POST['submit'])) Function -->
-            <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+            <button type="submit" class="btn btn-primary" name="submit">Update</button>
         </form>
     </div>
 
