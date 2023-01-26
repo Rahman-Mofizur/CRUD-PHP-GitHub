@@ -46,7 +46,6 @@ include 'connect.php';
 
                 // If Result id True or Found then next line code:
                 if ($result) {
-
                     // mysqli_fetch_assoc() Function fetches data [as String] from the database through $result variable
                     while ($row = mysqli_fetch_assoc($result)) {    // যতক্ষণ $row = mysqli_fetch_assoc($result) হবে ততক্ষণ input নিতে থাকবে।
                         $id = $row['id'];
@@ -59,7 +58,7 @@ include 'connect.php';
                         // Print: by concatination (Must use single quote [.])
                         // <th scope="row">' . $id . '</th> == CSS style="font-weight: bold;"
                         echo '<tr>
-                        <th scope="row">' . $id . '</th>
+                        <td style="font-weight: bold">' . $id . '</td>
                         <td>' . $name . '</td>
                         <td>' . $email . '</td>
                         <td>' . $mobile . '</td>
@@ -76,28 +75,13 @@ include 'connect.php';
 
                 ?>
 
+                <!-- 
+                Shortcut Tips:
+                
+                button*2>a
+                <button><a href=""></a></button><button><a href=""></a></button>
+                -->
 
-
-
-
-                <!-- <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr> -->
             </tbody>
         </table>
     </div>
